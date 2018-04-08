@@ -1,3 +1,4 @@
+
 [Script Info]
 Title: Built By https://github.com/ComeDownToUs/SubMerge
 Original Script: Likely Someone Else
@@ -12,3 +13,6 @@ Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, PrimaryEffec
 Dialogue: Marked=0,00:01:12.83,00:01:19.00,HardDefault,NTP,0000,0000,0000,!Effect,TestStuff, TestAgain
 Dialogue: Marked=0,00:01:42.46,00:01:49.42,HardDefault,NTP,0000,0000,0000,!Effect,(testing parentheses)
 Dialogue: Marked=0,00:01:55.71,00:01:57.75,HardDefault,NTP,0000,0000,0000,!Effect,TESTS IN CAPS
+Notialogue: Marked=0,00:01:55.71,00:01:57.75,HardDefault,NTP,0000,0000,0000,!Effect,TESTS IN CAPS
+
+

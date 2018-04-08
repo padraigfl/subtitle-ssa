@@ -68,7 +68,7 @@ function buildDialogue(text, start, end, style) {
     Start: msecToSsaTime(start),
     End: msecToSsaTime(end),
     Style: style,
-    Text: text,
+    Text: text ? text.replace('\n', '\\n') : undefined,
   });
 
   if (text) {
@@ -80,14 +80,14 @@ function buildDialogue(text, start, end, style) {
 }
 
 function subToSsa(sub) {
-  var primaryDialogue = sub.text ? buildDialogue(sub.text, sub.startTime, sub.endTime, 'primary') : '';
-  var secondaryDialogue = sub.secondaryText ? buildDialogue(sub.secondaryText, sub.startTime, sub.endTime, 'secondary') : '';
+  var primaryDialogue = sub.text ? buildDialogue(sub.text, sub.start, sub.end, 'primary') : '';
+  var secondaryDialogue = sub.secondaryText ? buildDialogue(sub.secondaryText, sub.start, sub.end, 'secondary') : '';
 
   return primaryDialogue + secondaryDialogue;
 }
 
 function subArrayToSsa(subArray, styles, heading) {
-  if(!Array.isArray(subArray) && subArray.startTime && subArray.endTime && subArray.text){
+  if(!Array.isArray(subArray) && subArray.start && subArray.end){
     subArray = [ subArray ];
   }
 
@@ -109,4 +109,11 @@ function subArrayToSsa(subArray, styles, heading) {
     events + '\n';
 }
 
-module.exports = subArrayToSsa;
+module.exports = {
+  buildDialogue: buildDialogue,
+  buildHeading: buildHeading,
+  buildEventsHeading: buildEventsHeading,
+  subToSsa: subToSsa,
+  toSsa: subArrayToSsa,
+  msecToSsaTime: msecToSsaTime,
+};

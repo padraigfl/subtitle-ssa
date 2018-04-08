@@ -19,46 +19,64 @@ describe('convert', function() {
   var dialoguePrefix2 = 'NTP,0000,0000,0000,!Effect,';
 
   var obj = [
-    { id: 1, startTime: 72833, endTime: 79000, text: 'ASDFGHJKL\\nASDFGHJKL' },
-    { id: 2, startTime: 102458, endTime: 109417, text: 'Sfheee idjfhsa' },
-    { id: 3, startTime: 115708, endTime: 117750, text: 'Oooops', secondaryText: 'secondary' },
+    { start: 72833, end: 79000, text: 'ASDFGHJKL\\nASDFGHJKL' },
+    { start: 102458, end: 109417, text: 'Sfheee idjfhsa' },
+    { start: 115708, end: 117750, text: 'Oooops', secondaryText: 'secondary' },
   ];
+  var onlySecondaryNoArray = { start: 115708, end: 117750, secondaryText: 'secondary' };
 
-  // it('secondsToSsaTime', function() {
-  //   expect(convert.msecToSsaTime(3901560)).to.equal('01:05:01.56');
-  //   expect(convert.msecToSsaTime(7421501)).to.equal('02:03:41.50');
-  // });
-  // it('buildHeading', function() {
-  //   expect(convert.buildHeading()).to.equal(heading);
-  // });
-  // it('buildText', function() {
-  //   expect(convert.buildText(obj[0].text)).to.equal(
-  //     obj[0].text[0]+'\\n'+obj[0].text[1]
-  //   );
-  // });
-  // it('buildText with custom linesplit', function() {
-  //   expect(convert.buildText(obj[0].text, '|')).to.equal(
-  //     obj[0].text[0]+'|'+obj[0].text[1]
-  //   );
-  // });
-  // it('buildDialogue', function() {
-  //   expect(convert.buildDialogue(convert.buildText(obj[0].text), obj[0].start, obj[0].end, style)).to.equal(
-  //     dialoguePrefix1 + '00:01:12.83,00:01:19.00,'+ style + ',' + dialoguePrefix2 + obj[0].text[0] + '\\n' + obj[0].text[1] + '\n'
-  //   );
-  // });
-  // it('build dialogue with secondary subs', function() {
-  //   expect(convert.subToSsa(obj[2])).to.equal(
-  //     dialoguePrefix1 + '00:01:55.70,00:01:57.75,primary,' + dialoguePrefix2 + obj[2].text[0] + '\n' +
-  //     dialoguePrefix1 + '00:01:55.70,00:01:57.75,secondary,' + dialoguePrefix2 + obj[2].secondaryText[0] + '\n'
-  //   );
-  // });
-  it('subArrayToSsa', function() {
-    expect(convert(obj)).to.equal(
-      heading + '\n' + style + '\n' + '[Events]\n' +
-      'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text' + '\n' +
-      dialoguePrefix1 + '00:01:12.83,00:01:19.00,primary,' + dialoguePrefix2 + obj[0].text +  '\n' +
-      dialoguePrefix1 + '00:01:42.45,00:01:49.41,primary,' + dialoguePrefix2 + obj[1].text + '\n' +
+  var expectedEvents = '[Events]\n' +
+    'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text' + '\n' +
+    dialoguePrefix1 + '00:01:12.83,00:01:19.00,primary,' + dialoguePrefix2 + obj[0].text +  '\n' +
+    dialoguePrefix1 + '00:01:42.45,00:01:49.41,primary,' + dialoguePrefix2 + obj[1].text + '\n' +
+    dialoguePrefix1 + '00:01:55.70,00:01:57.75,primary,' + dialoguePrefix2 + obj[2].text + '\n' +
+    dialoguePrefix1 + '00:01:55.70,00:01:57.75,secondary,' + dialoguePrefix2 + obj[2].secondaryText + '\n\n';
+
+  it('secondsToSsaTime', function() {
+    expect(convert.msecToSsaTime(3901560)).to.equal('01:05:01.56');
+    expect(convert.msecToSsaTime(7421501)).to.equal('02:03:41.50');
+  });
+  it('buildHeading', function() {
+    expect(convert.buildHeading()).to.equal(heading);
+  });
+  it('buildDialogue', function() {
+    expect(convert.buildDialogue(obj[0].text, obj[0].start, obj[0].end, style)).to.equal(
+      dialoguePrefix1 + '00:01:12.83,00:01:19.00,'+ style + ',' + dialoguePrefix2 + obj[0].text +'\n'
+    );
+  });
+  it('build dialogue with secondary subs', function() {
+    expect(convert.subToSsa(obj[2])).to.equal(
       dialoguePrefix1 + '00:01:55.70,00:01:57.75,primary,' + dialoguePrefix2 + obj[2].text + '\n' +
+      dialoguePrefix1 + '00:01:55.70,00:01:57.75,secondary,' + dialoguePrefix2 + obj[2].secondaryText + '\n'
+    );
+  });
+  it('build dialogue with no text returns empty string', function() {
+    expect(convert.buildDialogue(undefined, obj[0].start, obj[0].end, style)).to.equal(
+      ''
+    );
+  });
+  it('subArrayToSsa', function() {
+    expect(convert.toSsa(obj)).to.equal(
+      heading + '\n' + style + '\n' + expectedEvents
+    );
+  });
+  it('subArrayToSsa with custom fields', function() {
+    var styleString = 'styles';
+    var headString = 'head';
+    expect(convert.toSsa(obj, styleString)).to.equal(
+      heading + '\n' + styleString + '\n' + expectedEvents
+    );
+    expect(convert.toSsa(obj, styleString, headString)).to.equal(
+      headString + '\n' + styleString + '\n' + expectedEvents
+    );
+    expect(convert.toSsa(obj, false, headString)).to.equal(
+      headString + '\n' + style + '\n' + expectedEvents
+    );
+  });
+  it('handles single sub object, only secondary sub', function(){
+    expect(convert.toSsa(onlySecondaryNoArray)).to.equal(
+      heading+ '\n' + style + '\n' + '[Events]\n' +
+      'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text' + '\n' +
       dialoguePrefix1 + '00:01:55.70,00:01:57.75,secondary,' + dialoguePrefix2 + obj[2].secondaryText + '\n\n'
     );
   });

@@ -61,9 +61,6 @@ typings/
 .next
 
 # customs
-/src/output/aggregatedData/*
-/src/output/geoJSONs/*
-/src/output/routeData/*
-/src/output/schedules/*
 .DS_Store
 **/.DS_Store
+/.nyc_output/

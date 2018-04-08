@@ -13,7 +13,7 @@ function ssaTimeToMsec(ssaTime) {
 }
 
 function cleanFile(data) {
-  return data.replace(/^\s+|\s+$/g, '');
+  return data.replace(/(^[\s\r\n]+)|([\s\r\n]+$)/g, '');
 }
 
 // TODO improve handling of multiline breaks which occur in events
@@ -52,7 +52,7 @@ function removeInlineFormatting(text) {
   return text.split(/{\\[^}]*}/g).join('');
 }
 
-function pullEventData(line, format, idx, omitInlineStyles) {
+function pullEventData(line, format, omitInlineStyles) {
   var eventList = parseLine('dialogue', line);
 
   var start = ssaTimeToMsec(eventList[format.startIdx]);
@@ -64,9 +64,8 @@ function pullEventData(line, format, idx, omitInlineStyles) {
   }
 
   return {
-    id: idx,
-    startTime: start,
-    endTime: end,
+    start: start,
+    end: end,
     text: text,
   };
 }
@@ -80,12 +79,14 @@ function parseSsa(data, omitInlineStyles) {
       return event;
     }
   });
-  return eventsList.map(function (event, idx) {
-    return pullEventData(event, eventFormat, idx+1, omitInlineStyles);
+  return eventsList.map(function (event) {
+    return pullEventData(event, eventFormat, omitInlineStyles);
   });
 }
 
 module.exports = {
   parseSsa: parseSsa,
   ssaTimeToMsec: ssaTimeToMsec,
+  parseLine: parseLine,
+  stripHeading: stripHeading,
 };
