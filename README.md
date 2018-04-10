@@ -15,8 +15,7 @@ Dependencies: None
 
 # Initial objectives
 
-- [ ] Build tests (travisCI)
-- [ ] Code coverage (istanbul/coveralls)
+- [x] Build tests (travisCI)[![Build Status](https://travis-ci.org/padraigfl/subtitle-ssa.svg?branch=master)](https://travis-ci.org/padraigfl/subtitle-ssa)
+- [ ] Code coverage (nyc/coveralls) [![Coverage Status](https://coveralls.io/repos/github/padraigfl/subtitle-ssa/badge.svg?branch=master)](https://coveralls.io/github/padraigfl/subtitle-ssa?branch=master)
 - [x] Maintainabilty checks [![Maintainability](https://api.codeclimate.com/v1/badges/d30d1df26be3154dff5b/maintainability)](https://codeclimate.com/github/padraigfl/subtitle-ssa/maintainability)
-- [ ] More extensive testing with SSA files
 - [ ] Enter NPM registry
