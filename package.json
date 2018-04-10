@@ -4,11 +4,12 @@
   "description": "A package for parsing SSA/ASS/Aegisub files which complements srt modules",
   "main": "dist/ssa.bundle.js",
   "scripts": {
-    "test": "nyc mocha --reporter spec",
+    "test": "npm run lint && mocha --reporter spec",
     "test:watch": "mocha --reporter spec --watch",
     "start": "node src/index.js",
     "lint": "eslint -c .eslintrc.js --quiet src/* test/*",
-    "build": "WEBPACK_ENV=build webpack"
+    "build": "WEBPACK_ENV=build webpack",
+    "coverage": "nyc npm test"
   },
   "keywords": [
     "ass",
