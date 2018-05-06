@@ -4,8 +4,8 @@ var parse = require('./parse');
 var convert = require('./convert');
 
 module.exports = {
-  fromSsa: parse.parseSsa,
-  toSsa: convert,
+  parse: parse.parseSsa,
+  stringify: convert.toSsa,
   toMS: parse.ssaTimeToMsec,
   toSsaTime: convert.msecToSsaTime,
 };
