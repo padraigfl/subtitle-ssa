@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/padraigfl/subtitle-ssa.svg?branch=master)](https://travis-ci.org/padraigfl/subtitle-ssa) [![Coverage Status](https://coveralls.io/repos/github/padraigfl/subtitle-ssa/badge.svg?branch=master)](https://coveralls.io/github/padraigfl/subtitle-ssa?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/d30d1df26be3154dff5b/maintainability)](https://codeclimate.com/github/padraigfl/subtitle-ssa/maintainability)
 
-A pretty straightforward module for parsing and writing SSA/ASS/Aegisub/SubStation Alpha files which has been designed to closely resemble the two most popular SRT modules I could find, subtitles-parser and subtitle, following the latter's format slightly closer due to it using milleseconds by default in its object time properites. Styles are not preserved from parsed files.
+A pretty straightforward module for parsing and writing SSA/ASS/Aegisub/SubStation Alpha files which has been designed to closely resemble the two most popular SRT modules I could find, subtitles-parser and subtitle, following the latter's format slightly closer due to it using milleseconds by default in its object time properites.
 
 This is part of a series of subtitle related modules which I will be publishing over the next while and have been scoped out in an earlier project on my github. As they were all originally part of a bigger project, there are doubtlessly some weird overlaps that need to be ironed out.
 
@@ -17,8 +17,6 @@ Dependencies: None!
 - `npm run lint` fairly simple ES5 lint checks on both source code and test files
 
 ## Exported Functions
-
-(Example code for each to come at a later date)
 
 ### `parse(data: String, [omitInlineStyles]) -> Array`
 
@@ -52,10 +50,23 @@ The object format used is as follows
   start: 123, // start time of subtitle in milliseconds
   end: 456, // end time
   text: 'text', // the text displayed for the subtitle
+  secondaryText: 'subtext', // text for displaying subtitles in a separate format
 }
 ```
 
 It should be pretty easy to readapt for any other format if required. I may write up some gists to copy and paste for modules such as subtitles-parser. An optional fourth attribute exists for the ability to add captions, notes and secondary subtitle tracks; it will be styled under the name 'secondary'
+
+## Concessions
+
+- Due to the considerable additional overhead involved, general styles are not preserved.
+- As this project stems from a project revolving around merging subtitle files, there are two lines of code which are specifically related to accommodating that but hopefully have other use cases
+- Subtitles must be already in UTF-8 format, they seem to work regardless with latin alphabet characters if not but anything else is a wildcard
+
+## Contribution Notes
+
+- I don't really expect anyone to but if they do, please flag an issue first and I'll get back within a day
+- When flagging an issue, please inform me of the subtitle file which failed and what the possible causes may have been
+- Ideas for extra functionality and more optimised code are very strongly encouraged!
 
 ## Thanks
 
