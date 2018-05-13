@@ -2,6 +2,14 @@
 
 [![Build Status](https://travis-ci.org/padraigfl/subtitle-ssa.svg?branch=master)](https://travis-ci.org/padraigfl/subtitle-ssa) [![Coverage Status](https://coveralls.io/repos/github/padraigfl/subtitle-ssa/badge.svg?branch=master)](https://coveralls.io/github/padraigfl/subtitle-ssa?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/d30d1df26be3154dff5b/maintainability)](https://codeclimate.com/github/padraigfl/subtitle-ssa/maintainability)
 
+1. [Introduction](#introduction)
+2. [Setup](#setup)
+3. [Functions](#exported-functions)
+4. [Subtitle Object](#subtitle-object)
+5. [Concessions](#concessions)
+
+## Introduction
+
 A pretty straightforward module for parsing and writing SSA/ASS/Aegisub/SubStation Alpha files which has been designed to closely resemble the two most popular SRT modules I could find, subtitles-parser and subtitle, following the latter's format slightly closer due to it using milleseconds by default in its object time properites.
 
 This is part of a series of subtitle related modules which I will be publishing over the next while and have been scoped out in an earlier project on my github. As they were all originally part of a bigger project, there are doubtlessly some weird overlaps that need to be ironed out.
@@ -24,6 +32,31 @@ Converts an SSA formatted string into a simple array of objects.
 
 `omitInlineStyles` The optional second argument, which defaults to false, removes any inline styling provided in the subtitle file's dialogue field.
 
+```js
+  var SSA = require('subtitle-ssa');
+  var subFile = readFileFunction('./test/dummySubs/inlineStyle.ssa'); // check directory in repo
+
+  SSA.parse(subFile);
+  // RETURNS
+  // [
+  //   {
+  //     start: 47100,
+  //     end: 49100,
+  //     text: '{\fnTimes New Roman\fs48\b0}asdfsadf sdsaada sdsd a {\k56}Red {\k70}blue {\k84}green {\k109}karaoke{\k56}Red {\k70}blue {\k84}green {\k109}karaoke',
+  //   }
+  // ];
+
+  SSA.parse(subFile, true);
+  // RETURNS
+  // [
+  //   {
+  //     start: 47100,
+  //     end: 49100,
+  //     text: 'asdfsadf sdsaada sdsd a Red blue green karaokeRed blue green karaoke'
+  //   }
+  // ];
+```
+
 ### `convert(subArray: Array, [styles: String, [heading: String]]) -> String`
 
 Converts an array of formatted objects into an SSA string.
@@ -33,13 +66,30 @@ This style will always be called 'primary' so any passed in style needs to share
 
 `heading` operates the same as styles, except for the top most definitions of the subtitle file, there's very little reason to use this.
 
+```js
+  var SSA = require('subtitle-ssa');
+  var subObj = [
+
+  ]
+  SSA.convert(subFile);
+```
+
 ### `toMS(ssaTime: String) -> Number`
 
 Converts hh:mm:ss.HH (HH for hundreths as that's SSA's default) to a millisecond integer
 
+```js
+  var SSA = require('subtitle-ssa');
+  SSA.toMS('00:00:01.11'); // returns 1110
+```
+
 ### `toSsaTime(mseconds: Number) -> String`
 
 Opposite of `toMS`
+```js
+  var SSA = require('subtitle-ssa');
+  SSA.toSsaTime(1110); // returns '00:00:01.11'
+```
 
 ## Subtitle Object
 
@@ -50,7 +100,7 @@ The object format used is as follows
   start: 123, // start time of subtitle in milliseconds
   end: 456, // end time
   text: 'text', // the text displayed for the subtitle
-  secondaryText: 'subtext', // text for displaying subtitles in a separate format
+  secondaryText: 'subtext', // text for displaying subtitles in a separate style, currently only used for output
 }
 ```
 
@@ -58,9 +108,9 @@ It should be pretty easy to readapt for any other format if required. I may writ
 
 ## Concessions
 
-- Due to the considerable additional overhead involved, general styles are not preserved.
+- Due to the considerable additional overhead involved, general styles are not preserved from an existing SSA file
 - As this project stems from a project revolving around merging subtitle files, there are two lines of code which are specifically related to accommodating that but hopefully have other use cases
-- Subtitles must be already in UTF-8 format, they seem to work regardless with latin alphabet characters if not but anything else is a wildcard
+- Subtitles must be already in UTF-8 format, they seem to work regardless with latin alphabet characters if not but anything else is a wildcard.
 
 ## Contribution Notes
 

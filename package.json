@@ -1,6 +1,6 @@
 {
   "name": "subtitle-ssa",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "A package for parsing SSA/ASS/Aegisub files which complements srt modules",
   "main": "dist/ssa.bundle.js",
   "scripts": {
