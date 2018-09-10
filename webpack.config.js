@@ -12,7 +12,6 @@ if (env === 'build') {
 }
 
 var config = {
-  mode: 'production',
   entry: __dirname + '/src/index.js',
   devtool: 'source-map',
   output: {
@@ -24,7 +23,9 @@ var config = {
   },
   optimization: {
     minimize: true,
-  }
+  },
+  target: 'node',
+  mode: 'production',
 };
 
 module.exports = config;

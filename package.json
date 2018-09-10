@@ -10,7 +10,8 @@
     "test:watch": "mocha --reporter spec --watch",
     "build": "WEBPACK_ENV=build webpack",
     "coverage": "nyc npm test",
-    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "add-build": "git add dist"
   },
   "keywords": [
     "ass",
@@ -37,6 +38,7 @@
   },
   "pre-commit": [
     "test",
-    "build"
+    "build",
+    "add-build"
   ]
 }
