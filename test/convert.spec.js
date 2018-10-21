@@ -2,7 +2,7 @@
 'use strict';
 
 var expect = require('chai').expect;
-var convert = require('../src/convert');
+var convert = require('../dist/convert');
 
 describe('convert', function() {
   var heading = '[Script Info]\n' +
@@ -23,7 +23,6 @@ describe('convert', function() {
     { start: 102458, end: 109417, text: 'Sfheee idjfhsa' },
     { start: 115708, end: 117750, text: 'Oooops', secondaryText: 'secondary' },
   ];
-  var onlySecondaryNoArray = { start: 115708, end: 117750, secondaryText: 'secondary' };
 
   var expectedEvents = '[Events]\n' +
     'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text' + '\n' +
@@ -71,13 +70,6 @@ describe('convert', function() {
     );
     expect(convert.toSsa(obj, false, headString)).to.equal(
       headString + '\n' + style + '\n' + expectedEvents
-    );
-  });
-  it('handles single sub object, only secondary sub', function(){
-    expect(convert.toSsa(onlySecondaryNoArray)).to.equal(
-      heading+ '\n' + style + '\n' + '[Events]\n' +
-      'Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text' + '\n' +
-      dialoguePrefix1 + '00:01:55.70,00:01:57.75,secondary,' + dialoguePrefix2 + obj[2].secondaryText + '\n\n'
     );
   });
 });

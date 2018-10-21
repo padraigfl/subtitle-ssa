@@ -1,7 +1,7 @@
 'use strict';
 
 var expect = require('chai').expect;
-var parse = require('../src/parse');
+var parse = require('../dist/parse');
 var fs = require('fs');
 
 function readFile(filename) {
