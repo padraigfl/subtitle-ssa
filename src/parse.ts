@@ -1,4 +1,4 @@
-import { scale, SubtitleType } from './shared'
+import { scale, SubtitleType } from './shared';
 
 export const ssaTimeToMsec = (ssaTime: string): number => (
   ssaTime.split(/[:.]/g)
