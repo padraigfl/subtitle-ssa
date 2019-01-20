@@ -1,5 +1,5 @@
 {
-  "name": "subtitles-parser-ssa",
+  "name": "subtitles-ssa",
   "version": "1.0.0",
   "description": "A tool for parsing and writing SSA/AegiSub subtitles",
   "main": "dist/index.js",
