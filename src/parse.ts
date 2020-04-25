@@ -8,9 +8,16 @@ export const ssaTimeToMsec = (ssaTime: string): number => (
 
 const cleanFile = (data: string): string => data.replace(/(^[\s\r\n]+)|([\s\r\n]+$)/g, '');
 
-export const stripHeading = (ssaFile: string): string[] => ssaFile
-  .split(/[\r\n]{4,}|\n{2,}/).slice(2).join('\n') // Breaking apart sections
-  .split(/[\n\s]*\[\s*Events\s*\][\n\s]*/i).join('').split('\n'); // split events and styles
+export const stripHeading = (ssaFile: string): string[] => {
+  const regex = new RegExp(
+    '^\\[Events][\\s\\S]+' +
+    `${ssaFile.indexOf(/^\[Aegisub Extradata]/) !== -1 ? '(?=\\[.+]$)' : ''}`,
+    'gm'
+  )
+
+  return ssaFile
+    .match(regex)[0].replace(/\[Events]\s+/, '').split(/(?:(?:\r\n)|\n)/)
+}
 
 export const parseLine = (heading: string, line: string): string[] => line
   .replace(new RegExp(('\\s*' + heading + ':\\s*'), 'i'), '') // todo, explain
